@@ -23,7 +23,7 @@ You will be asked for the following information:
 "example_name": "example_name",
 "author_name": "Your name (or your organization/team)",
 "description": "A short description of the example.",
-"dataset_url": "The url for downloading the dataset using datalad"
+"dataset_path": "The local path to the dataset being used"
 ```
 
 **4. This will create the following directory tree:**
@@ -33,7 +33,6 @@ You will be asked for the following information:
 ├── data
 ├── model
 │   └── model-{example_name}_smdl.json
-└── notebook
     └── {example_name}.ipynb
 ```
 
