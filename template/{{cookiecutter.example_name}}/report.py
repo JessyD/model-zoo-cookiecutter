@@ -27,19 +27,26 @@ from nilearn.plotting import plot_design_matrix
 # %% [markdown]
 # #### Set Up
 # Instantiate the `BIDSLayout` to index the dataset, and load `BIDS Stats Model` JSON document
-# Define variables from the information passed to cookiecutter
-dataset_path = {{cookiecutter.dataset_path}}
-example_name = {{cookiecutter.example_name}}
 
 # %%
-layout = BIDSLayout(f'./{{cookiecutter.dataset_path}}/', derivatives=f'./{{cookiecutter.dataset_path}}/derivatives/fmriprep/')
+# Variables provided using cookiecutter
+dataset_path = Path(f'{{cookiecutter.dataset_path}}')
+example_name = f'{{cookiecutter.example_name}}'
+scan_length = {{cookiecutter.scan_length}}
+derivatives = '{{cookiecutter.derivatives}}'
+
+# %%
+if derivatives == 'None':
+    layout = BIDSLayout(f'{dataset_path}')
+else:
+    layout = BIDSLayout(f'{dataset_path}', derivatives=derivatives)
 
 # %% [markdown]
 # #### Model & model graph
 
 # %%
 model_json = f'model-{example_name}_smdl.json'
-spec = model_json.loads(Path(json_file).read_text())
+spec = json.loads(model_json).read_text())
 spec
 
 # %%
@@ -55,8 +62,8 @@ graph.write_graph(format='svg')
 try:
     graph.load_collections()
 except ValueError:
-    scan_length=453 # Set scan length to avoid downloadin images
-    graph.load_collections(scan_length=453) 
+    scan_length=scan_length # Set scan length to avoid downloadin images
+    graph.load_collections(scan_length=scan_length)
 
 # %% [markdown]
 # #### Run-level node
@@ -81,7 +88,7 @@ specs[0].entities
 specs[0].metadata
 
 # %%
-next_node = root_node.children[0].destination
+next_node = graph.root_node.children[0].destination
 
 # %%
 next_node.group_by
